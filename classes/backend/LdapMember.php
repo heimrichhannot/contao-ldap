@@ -1,8 +1,8 @@
 <?php
 
-namespace HeimrichHannot\Ldap;
+namespace HeimrichHannot\Ldap\Backend;
 
-class LdapMemberModel extends LdapPersonModel
+class LdapMember extends LdapPerson
 {
     protected static $blnUserMode        = false;
     protected static $strPrefix          = 'Member';

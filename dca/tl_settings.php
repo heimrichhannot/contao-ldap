@@ -1,131 +1,192 @@
-<?php 
+<?php
 
-$dc = &$GLOBALS['TL_DCA']['tl_settings'];
+$arrDca = &$GLOBALS['TL_DCA']['tl_settings'];
 
 /**
  * Palettes
  */
-$replace = '{ldap_legend},ldap;';
-
-$dc['palettes']['__selector__'][] = 'ldap';
-
-if(extension_loaded('ldap')) {
-	$dc['palettes']['default'] = str_replace('{chmod_legend', $replace . '{chmod_legend', $dc['palettes']['default']);
+if (extension_loaded('ldap'))
+{
+    $arrDca['palettes']['__selector__'][] = 'addLdapForMembers';
+    $arrDca['palettes']['__selector__'][] = 'addLdapForUsers';
+    $arrDca['palettes']['default']        =
+        str_replace('{chmod_legend', '{ldap_legend},addLdapForMembers,addLdapForUsers;{chmod_legend', $arrDca['palettes']['default']);
 }
-else {
-	\Message::addInfo('LDAP PHP Extension not enabled, open your php.ini and uncomment "extension = php_ldap.dll".');
+else
+{
+    \Message::addInfo('LDAP PHP Extension not enabled, open your php.ini and uncomment "extension = php_ldap.dll".');
 }
-
 
 /**
  * Subpalettes
  */
+// subpalettes are generated dynamically below
+$arrDca['subpalettes']['addLdapForMembers'] = '';
+$arrDca['subpalettes']['addLdapForUsers']   = '';
 
-$dc['subpalettes']['ldap'] = 'ldap_host,ldap_base,ldap_port,ldap_filter_person,ldap_filter_group,ldap_uid,ldap_method,ldap_binddn,ldap_password,ldap_groups,ldap_uid_skip';
 
 /**
  * Fields
  */
 
-$arrFields = array
-(
-	'ldap'	=> array
-	(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['ldap'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-			'eval'                    => array('submitOnChange'=>true),
-	),
-	'ldap_host'	=> array
-	(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['ldap_host'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities' => true, 'tl_class'=>'w50'),
-	),
-	'ldap_base'	=> array
-	(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['ldap_base'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities' => true, 'tl_class'=>'w50'),
-	),
-	'ldap_port'	=> array
-	(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['ldap_port'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'default'				  => 389,
-			'eval'                    => array('mandatory' => true, 'maxlength'=>5, 'rgxp'=>'digit', 'tl_class'=>'w50'),
-	),
-	'ldap_filter_person'	=> array
-	(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['ldap_filter_person'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'default'				  => '(&(objectClass=person)(objectClass=posixAccount))',
-			'eval'                    => array('mandatory'=>true, 'decodeEntities' => true, 'tl_class'=>'w50'),
-	),
-	'ldap_filter_group'	=> array
-	(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['ldap_filter_group'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'default'				 					=> '(&(objectClass=group))',
-			'eval'                    => array('mandatory'=>true, 'decodeEntities' => true, 'tl_class'=>'w50'),
-	),
-	'ldap_uid'	=> array
-	(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['ldap_uid'],
-			'exclude'                 => true,
-			'inputType'               => 'select',
-			'default'									=> 'uid',
-			'options'                 => array_keys(\HeimrichHannot\Ldap::$loginProperties),
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>64, 'tl_class'=>'w50'),
-	),
-	'ldap_method'	=> array
-	(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['ldap_method'],
-			'default'                 => 'plain',
-			'exclude'                 => true,
-			'inputType'               => 'select',
-			'options'                 => array('plain', 'ssl'),
-			'eval'										=> array('tl_class'=>'w50'),
-	),
-	'ldap_binddn'	=> array
-	(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['ldap_binddn'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities' => true, 'tl_class'=>'long clr'),
-	),
-	'ldap_password'	=> array
-	(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['ldap_password'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities' => true, 'tl_class'=>'w50'),
-	),
-	'ldap_groups' 	=> 	array
-	(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['ldap_groups'],
-			'exclude'                 => true,
-			'filter'                  => true,
-			'inputType'               => 'checkboxWizard',
-			'eval'                    => array('multiple'=>true, 'tl_class'=>'long clr'),
-			'options_callback'			=> array('HeimrichHannot\LdapMemberGroupModel', 'getLdapMemberGroupsAsOptions'),
-			'save_callback'						=> array
-			(
-				array('HeimrichHannot\LdapMemberGroup', 'updateMemberGroups'),
-			)
-	),
-	'ldap_uid_skip'	=> array
-	(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['ldap_uid_skip'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'decodeEntities' => true, 'tl_class'=>'long clr'),
-	),
+$arrFields = [
+    'host'                => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['host'],
+        'exclude'   => true,
+        'inputType' => 'text',
+        'eval'      => ['mandatory' => true, 'maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
+    ],
+    'base'                => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['base'],
+        'exclude'   => true,
+        'inputType' => 'text',
+        'eval'      => ['mandatory' => true, 'maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
+    ],
+    'port'                => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['port'],
+        'exclude'   => true,
+        'inputType' => 'text',
+        'default'   => 389,
+        'eval'      => ['mandatory' => true, 'maxlength' => 5, 'rgxp' => 'digit', 'tl_class' => 'w50'],
+    ],
+    'binddn'              => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['binddn'],
+        'exclude'   => true,
+        'inputType' => 'text',
+        'eval'      => ['mandatory' => true, 'maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'long clr'],
+    ],
+    'password'            => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['password'],
+        'exclude'   => true,
+        'inputType' => 'text',
+        'eval'      => ['mandatory' => true, 'maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
+    ],
+    'authMethod'          => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['authMethod'],
+        'default'   => 'plain',
+        'exclude'   => true,
+        'inputType' => 'select',
+        'options'   => ['plain', 'ssl'],
+        'eval'      => ['tl_class' => 'w50'],
+    ],
+    'personFilter'        => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['personFilter'],
+        'exclude'   => true,
+        'inputType' => 'text',
+        'default'   => '(&(objectClass=person)(objectClass=posixAccount))',
+        'eval'      => ['mandatory' => true, 'decodeEntities' => true, 'tl_class' => 'w50'],
+    ],
+    'ldapUsernameField'   => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['ldapUsernameField'],
+        'exclude'   => true,
+        'inputType' => 'text',
+        'default'   => 'uid',
+        'eval'      => ['mandatory' => true, 'maxlength' => 64, 'tl_class' => 'w50'],
+    ],
+    'skipLdapUsernames'   => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['skipLdapUsernames'],
+        'exclude'   => true,
+        'inputType' => 'text',
+        'eval'      => ['maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'long clr'],
+    ],
+    'personFieldMapping'  => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['personFieldMapping'],
+        'inputType' => 'multiColumnEditor',
+        'eval'      => [
+            'multiColumnEditor' => [
+                'minRowCount' => 0,
+                'fields'      => [
+                    'contaoField' => [
+                        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['contaoField'],
+                        'inputType' => 'text',
+                        'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
+                    ],
+                    'ldapField'   => [
+                        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['ldapField'],
+                        'inputType' => 'text',
+                        'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
+                    ],
+                ],
+            ],
+        ],
+        'sql'       => "blob NULL",
+    ],
+    'defaultPersonValues'  => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['defaultPersonValues'],
+        'inputType' => 'multiColumnEditor',
+        'eval'      => [
+            'multiColumnEditor' => [
+                'minRowCount' => 0,
+                'fields'      => [
+                    'field' => [
+                        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['field'],
+                        'inputType' => 'text',
+                        'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
+                    ],
+                    'defaultValue'   => [
+                        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['defaultValue'],
+                        'inputType' => 'text',
+                        'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
+                    ],
+                ],
+            ],
+        ],
+        'sql'       => "blob NULL",
+    ],
+    'groupFilter'         => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['groupFilter'],
+        'exclude'   => true,
+        'inputType' => 'text',
+        'default'   => '(&(objectClass=group))',
+        'eval'      => ['mandatory' => true, 'decodeEntities' => true, 'tl_class' => 'w50'],
+    ],
+    'groups'              => [
+        'label'            => &$GLOBALS['TL_LANG']['tl_settings']['groups'],
+        'exclude'          => true,
+        'filter'           => true,
+        'inputType'        => 'checkboxWizard',
+        'eval'             => ['multiple' => true, 'tl_class' => 'long clr'],
+        'options_callback' => ['HeimrichHannot\Ldap\Backend\LdapMemberGroup', 'getLdapMemberGroupsAsOptions'],
+        'save_callback'    => [
+            ['HeimrichHannot\Ldap\Backend\LdapMemberGroup', 'updateMemberGroups'],
+        ]
+    ]
+];
+
+$arrDca['fields'] = array_merge(
+    $arrDca['fields'],
+    [
+        'addLdapForMembers' => [
+            'label'     => &$GLOBALS['TL_LANG']['tl_settings']['addLdapForMembers'],
+            'exclude'   => true,
+            'inputType' => 'checkbox',
+            'eval'      => ['submitOnChange' => true],
+        ],
+        'addLdapForUsers'   => [
+            'label'     => &$GLOBALS['TL_LANG']['tl_settings']['addLdapForUsers'],
+            'exclude'   => true,
+            'inputType' => 'checkbox',
+            'eval'      => ['submitOnChange' => true],
+        ],
+    ]
 );
 
-$dc['fields'] = array_merge($dc['fields'], $arrFields);
+// dynamically add fields for members and users
+foreach ($arrFields as $strField => $arrData)
+{
+    $arrDca['fields']['ldapMember' . ucfirst($strField)] = $arrData;
+    $arrDca['subpalettes']['addLdapForMembers'] .= 'ldapMember' . ucfirst($strField) . ',';
+
+    $arrDca['fields']['ldapUser' . ucfirst($strField)] = $arrData;
+    $arrDca['subpalettes']['addLdapForUsers'] .= 'ldapUser' . ucfirst($strField) . ',';
+}
+
+$arrDca['fields']['ldapMemberGroups']['options_callback'] = ['HeimrichHannot\Ldap\Backend\LdapMemberGroup', 'getLdapPersonGroupsAsOptions'];
+$arrDca['fields']['ldapMemberGroups']['save_callback'] = [
+    ['HeimrichHannot\Ldap\Backend\LdapMemberGroup', 'updatePersonGroups'],
+];
+
+$arrDca['fields']['ldapUserGroups']['options_callback'] = ['HeimrichHannot\Ldap\Backend\LdapUserGroup', 'getLdapPersonGroupsAsOptions'];
+$arrDca['fields']['ldapUserGroups']['save_callback'] = [
+    ['HeimrichHannot\Ldap\Backend\LdapUserGroup', 'updatePersonGroups'],
+];

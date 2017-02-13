@@ -1,9 +1,10 @@
 <?php
 
 /**
- * Placeholder
+ * Misc
  */
 $GLOBALS['TL_LANG']['MSC']['usernamemail'] = 'E-Mail';
+$GLOBALS['TL_LANG']['MSC']['ldapGroupPrefix'] = 'LDAP - ';
 
 /**
  * Messages

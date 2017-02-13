@@ -1,53 +1,49 @@
 <?php
 
-namespace HeimrichHannot;
+namespace HeimrichHannot\Ldap;
+
+use HeimrichHannot\Request\Request;
 
 class ModuleLdapLogin extends \ModuleLogin
 {
-	protected $isUserNameEmail = false;
+    public function generate()
+    {
+        if (Request::getPost('FORM_SUBMIT') == 'tl_login')
+        {
+            if (Request::getPost('username') && Request::getPost('password'))
+            {
+                $objMember = \MemberModel::findBy('username', Request::getPost('username'));
 
-	/**
-	 * Store Login Module ID in Session, required by LdapAuth (Module config)
-	 * @return string
-	 */
-	public function generate()
-	{
-		// Login
-		if (\Input::post('FORM_SUBMIT') == 'tl_login')
-		{
-			if (\Input::post('username', true) && \Input::post('password', true))
-			{
-				$objMember = \MemberModel::findBy('username', \Input::post('username', true));
+                if ($objMember !== null)
+                {
+                    // always reset the password to a random value, otherwise checkCredentialsHook will never be triggered
+                    $objMember->password = md5(time() . Request::getPost('username'));
+                    $objMember->save();
+                }
 
-				if($objMember !== null)
-				{
-					// always reset the password to a random value, otherwise checkCredentialsHook will never be triggered
-					LdapMember::resetPassword($objMember, \Input::post('username', true));
-				}
-			}
-			
-			// validate email
-			if($GLOBALS['TL_CONFIG']['ldap_uid'] == 'mail' && !\Validator::isEmail(\Input::post('username', true)))
-			{
-				\Message::addError($GLOBALS['TL_LANG']['ERR']['email']);
-				$this->reload();
-			}
-		}
+                // validate email
+                if (Ldap::usernameIsEmail() && !\Validator::isEmail(Request::getPost('username')))
+                {
+                    \Message::addError($GLOBALS['TL_LANG']['ERR']['email']);
+                    \Controller::reload();
+                }
+            }
+        }
 
-		$strParent = parent::generate();
+        $strParent = parent::generate();
 
-		return $strParent;
-	}
+        return $strParent;
+    }
 
-	protected function compile()
-	{
-		parent::compile();
+    protected function compile()
+    {
+        parent::compile();
 
-		if($GLOBALS['TL_CONFIG']['ldap_uid'] == 'mail')
-		{
-			$this->Template->username = $GLOBALS['TL_LANG']['MSC']['usernamemail'];
-		}
-	}
+        if (Ldap::usernameIsEmail())
+        {
+            $this->Template->username = $GLOBALS['TL_LANG']['MSC']['usernamemail'];
+        }
+    }
 
 
 }

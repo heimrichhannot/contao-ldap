@@ -1,6 +1,6 @@
 <?php
 
-$arrDca = &$GLOBALS['TL_DCA']['tl_member'];
+$arrDca = &$GLOBALS['TL_DCA']['tl_user'];
 
 /**
  * Fields

@@ -3,11 +3,9 @@
 /**
  * Contao Open Source CMS
  *
- * Copyright (c) 2005-2013 Leo Feyer
+ * Copyright (c) 2005-2017 Leo Feyer
  *
- * @package Ldap
- * @link    https://contao.org
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ * @license LGPL-3.0+
  */
 
 
@@ -25,15 +23,23 @@ ClassLoader::addNamespaces(array
  */
 ClassLoader::addClasses(array
 (
+	// Modules
+	'HeimrichHannot\Ldap\ModuleLdapLogin'         => 'system/modules/ldap/modules/ModuleLdapLogin.php',
+
 	// Classes
-	'HeimrichHannot\Ldap'                 => 'system/modules/ldap/classes/Ldap.php',
-	'HeimrichHannot\LdapMember'           => 'system/modules/ldap/classes/LdapMember.php',
-	'HeimrichHannot\LdapMemberGroup'      => 'system/modules/ldap/classes/LdapMemberGroup.php',
+	'HeimrichHannot\Ldap\Backend\LdapUser'        => 'system/modules/ldap/classes/backend/LdapUser.php',
+	'HeimrichHannot\Ldap\Backend\LdapPerson'      => 'system/modules/ldap/classes/backend/LdapPerson.php',
+	'HeimrichHannot\Ldap\Backend\LdapPersonGroup' => 'system/modules/ldap/classes/backend/LdapPersonGroup.php',
+	'HeimrichHannot\Ldap\Backend\LdapUserGroup'   => 'system/modules/ldap/classes/backend/LdapUserGroup.php',
+	'HeimrichHannot\Ldap\Backend\LdapMember'      => 'system/modules/ldap/classes/backend/LdapMember.php',
+	'HeimrichHannot\Ldap\Backend\LdapMemberGroup' => 'system/modules/ldap/classes/backend/LdapMemberGroup.php',
+	'HeimrichHannot\Ldap\Ldap'                    => 'system/modules/ldap/classes/Ldap.php',
 
 	// Models
-	'HeimrichHannot\LdapMemberGroupModel' => 'system/modules/ldap/models/LdapMemberGroupModel.php',
-	'HeimrichHannot\LdapMemberModel'      => 'system/modules/ldap/models/LdapMemberModel.php',
-
-	// Modules
-	'HeimrichHannot\ModuleLdapLogin'      => 'system/modules/ldap/modules/ModuleLdapLogin.php',
+	'HeimrichHannot\Ldap\LdapPersonGroupModel'    => 'system/modules/ldap/models/LdapPersonGroupModel.php',
+	'HeimrichHannot\Ldap\LdapPersonModel'         => 'system/modules/ldap/models/LdapPersonModel.php',
+	'HeimrichHannot\Ldap\LdapMemberGroupModel'    => 'system/modules/ldap/models/LdapMemberGroupModel.php',
+	'HeimrichHannot\Ldap\LdapUserGroupModel'      => 'system/modules/ldap/models/LdapUserGroupModel.php',
+	'HeimrichHannot\Ldap\LdapUserModel'           => 'system/modules/ldap/models/LdapUserModel.php',
+	'HeimrichHannot\Ldap\LdapMemberModel'         => 'system/modules/ldap/models/LdapMemberModel.php',
 ));
