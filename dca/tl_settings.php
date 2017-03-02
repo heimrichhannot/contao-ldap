@@ -36,12 +36,6 @@ $arrFields = [
         'inputType' => 'text',
         'eval'      => ['mandatory' => true, 'maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
     ],
-    'base'                => [
-        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['base'],
-        'exclude'   => true,
-        'inputType' => 'text',
-        'eval'      => ['mandatory' => true, 'maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
-    ],
     'port'                => [
         'label'     => &$GLOBALS['TL_LANG']['tl_settings']['port'],
         'exclude'   => true,
@@ -66,8 +60,14 @@ $arrFields = [
         'default'   => 'plain',
         'exclude'   => true,
         'inputType' => 'select',
-        'options'   => ['plain', 'ssl'],
-        'eval'      => ['tl_class' => 'w50'],
+        'options'   => ['ssl'],
+        'eval'      => ['tl_class' => 'w50', 'includeBlankOption' => true],
+    ],
+    'personBase'                => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['personBase'],
+        'exclude'   => true,
+        'inputType' => 'text',
+        'eval'      => ['mandatory' => true, 'maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
     ],
     'personFilter'        => [
         'label'     => &$GLOBALS['TL_LANG']['tl_settings']['personFilter'],
@@ -133,12 +133,40 @@ $arrFields = [
         ],
         'sql'       => "blob NULL",
     ],
+    'groupBase'                => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['groupBase'],
+        'exclude'   => true,
+        'inputType' => 'text',
+        'eval'      => ['mandatory' => true, 'maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
+    ],
     'groupFilter'         => [
         'label'     => &$GLOBALS['TL_LANG']['tl_settings']['groupFilter'],
         'exclude'   => true,
         'inputType' => 'text',
         'default'   => '(&(objectClass=group))',
         'eval'      => ['mandatory' => true, 'decodeEntities' => true, 'tl_class' => 'w50'],
+    ],
+    'groupFieldMapping'  => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['groupFieldMapping'],
+        'inputType' => 'multiColumnEditor',
+        'eval'      => [
+            'multiColumnEditor' => [
+                'minRowCount' => 0,
+                'fields'      => [
+                    'contaoField' => [
+                        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['contaoField'],
+                        'inputType' => 'text',
+                        'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
+                    ],
+                    'ldapField'   => [
+                        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['ldapField'],
+                        'inputType' => 'text',
+                        'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
+                    ],
+                ],
+            ],
+        ],
+        'sql'       => "blob NULL",
     ],
     'groups'              => [
         'label'            => &$GLOBALS['TL_LANG']['tl_settings']['groups'],

@@ -21,7 +21,7 @@ abstract class LdapPersonModel extends \Model
 
             $strQuery = ldap_search(
                 $objConnection,
-                'CN=users,' . \Config::get('ldap' . static::$strPrefix . 'Base'),
+                \Config::get('ldap' . static::$strPrefix . 'PersonBase'),
                 \Config::get('ldap' . static::$strPrefix . 'PersonFilter'),
                 $arrAttributes
             );

@@ -2,8 +2,6 @@
 
 namespace HeimrichHannot\Ldap\Backend;
 
-use HeimrichHannot\Ldap\LdapMemberGroupModel;
-
 class LdapPersonGroup
 {
     protected static $blnUserMode        = false;
@@ -23,8 +21,14 @@ class LdapPersonGroup
         }
 
         $strLdapGroupModelClass = static::$strLdapGroupModel;
+        $arrRemoteLdapGroups    = $strLdapGroupModelClass::findAll();
 
-        foreach ($strLdapGroupModelClass::findAll() as $strId => $arrGroup)
+        if (!is_array($arrRemoteLdapGroups))
+        {
+            return [];
+        }
+
+        foreach ($arrRemoteLdapGroups as $strId => $arrGroup)
         {
             $arrGroups[$strId] = $arrGroup['label'];
         }

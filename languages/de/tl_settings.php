@@ -8,13 +8,13 @@ $arrLang = &$GLOBALS['TL_LANG']['tl_settings'];
 $arrLang['addLdapForMembers']   = ['LDAP für Mitglieder aktivieren', 'Aktivieren Sie hier den Login via Ldap für Mitglieder.'];
 $arrLang['addLdapForUsers']     = ['LDAP für Benutzer aktivieren', 'Aktivieren Sie hier den Login via Ldap für Benutzer.'];
 $arrLang['host']                = ['Host', 'IP oder Domain des LDAP-Servers'];
-$arrLang['base']                = ['Base', 'Startpunkt (BaseDN) für die Suche innerhalb des LDAP-Baums'];
-$arrLang['port']                = ['Port', 'Standard: 389.'];
+$arrLang['port']                = ['Port', 'Standard-Port: 389, SSL-Standard-Port: 636'];
+$arrLang['personBase']          = ['Base (Personen)', 'Adressierung für User (Beispiel: CN=users,DC=local,DC=anwaltverein,DC=de).'];
 $arrLang['personFilter'][0]     = 'Suchfilter für Personen';
 $arrLang['personFilter'][1]     =
     'Hinweis: Bitte filtern Sie so, dass das Benutzername-Feld nur einmal vorkommt bzw. das erste Vorkommen das relevante ist (Beispiel: "(&(objectClass=person)(objectClass=posixAccount)(mail=*@domain.com))")';
 $arrLang['personFieldMapping']  = [
-    'Abbildung von LDAP- auf Contao-Felder (Benutzername ist bereits oben festgelegt)',
+    'Abbildung von LDAP- auf Contao-Personenfelder (Benutzername ist bereits oben festgelegt)',
     'Legen Sie hier fest, wie bestehende LDAP-Personenfelder auf Contao-Felder abgebildet werden (Beispiel: givenname -> firstname).'
 ];
 $arrLang['ldapField']           = ['LDAP-Feld(er)', 'Einzelfeldname oder Muster (z. B. "%field% %other_field%")'];
@@ -25,12 +25,16 @@ $arrLang['defaultPersonValues'] = [
 ];
 $arrLang['field']               = ['Feld', ''];
 $arrLang['defaultValue']        = ['Wert', ''];
+$arrLang['groupBase']           = ['Base (Gruppen)', 'Adressierung für Groups (Beispiel: CN=groups,DC=local,DC=anwaltverein,DC=de).'];
 $arrLang['groupFilter']         = ['Suchfilter für Gruppen', 'Beispiel: "(&(objectClass=group))".'];
+$arrLang['groupFieldMapping']   = [
+    'Abbildung von LDAP- auf Contao-Gruppenfelder',
+    'Legen Sie hier fest, wie bestehende LDAP-Personenfelder auf Contao-Felder abgebildet werden (Beispiel: some_field -> name).'
+];
 $arrLang['ldapUsernameField']   = ['LDAP-Benutzernamefeld', 'Name des Attributs, das als Benutzername verwendet wird (Standard: uid).'];
-$arrLang['authMethod']          = ['Verschlüsselung', 'Legen Sie hier die Art der Verschlüsselung fest.'];
 $arrLang['binddn']              = [
     'Bind DN',
-    'Suchfilter für den Benutzer, der für die Anmeldung am Server genutzt werden soll (Beispiel: CN=ldapadmin,CN=users,DC=sampledomain,DC=com).'
+    'Suchfilter für den Benutzer, der für die Anmeldung am Server genutzt werden soll (Beispiel: CN=ldapadmin,CN=users,DC=sampledomain,DC=com; bei ActiveDirectories kann auch <Domain>\<User> genutzt werden.).'
 ];
 $arrLang['password']            = ['Bind DN Passwort', 'Geben Sie das Passwort für den Bind DN-Benutzer an.'];
 $arrLang['groups']              = ['Zu importierende Gruppen', 'Legen Sie fest, welche LDAP-Mitgliedergruppen verfügbar sein sollen.'];

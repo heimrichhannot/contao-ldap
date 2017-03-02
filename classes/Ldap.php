@@ -8,12 +8,14 @@ class Ldap extends \System
 
     const MODULE_LDAP_LOGIN = 'ldapLogin';
 
-    protected static $objMemberConnection;
-    protected static $objUserConnection;
+    const MODE_MEMBER = 'member';
+    const MODE_USER   = 'user';
 
-    public static function connect($blnUserMode = false)
+    protected static $arrConnections = [];
+
+    public static function connect($strMode)
     {
-        $strPrefix = 'ldap' . ($blnUserMode ? 'User' : 'Member');
+        $strPrefix = 'ldap' . ucfirst($strMode);
 
         if (($strHost = \Config::get($strPrefix . 'Host'))
             && ($strPort = \Config::get($strPrefix . 'Port'))
@@ -21,7 +23,9 @@ class Ldap extends \System
             && ($strPassword = \Config::get($strPrefix . 'Password'))
         )
         {
-            $objConnection = ldap_connect($strHost, $strPort) or die ("Could not connect to LDAP server.");
+            $strAuthMethod = \Config::get($strPrefix . 'AuthMethod');
+            $objConnection = ldap_connect(($strAuthMethod == 'ssl' ? 'ldaps://' : 'ldap://') . $strHost, $strPort)
+            or die ('Could not connect to LDAP server.');
 
             if (!is_resource($objConnection))
             {
@@ -32,19 +36,14 @@ class Ldap extends \System
             ldap_set_option($objConnection, LDAP_OPT_REFERRALS, 0);
 
             // check if bind dn can connect to ldap server
-            if (!@ldap_bind($objConnection, $strBindDn, $strPassword))
+            if (!ldap_bind($objConnection, $strBindDn, $strPassword))
             {
                 return false;
             }
 
-            if ($blnUserMode)
-            {
-                return static::$objUserConnection = $objConnection;
-            }
-            else
-            {
-                return static::$objMemberConnection = $objConnection;
-            }
+            static::$arrConnections[$strMode] = $objConnection;
+
+            return $objConnection;
         }
         else
         {
@@ -52,19 +51,14 @@ class Ldap extends \System
         }
     }
 
-    public static function getConnection($blnUserMode = false)
+    public static function getConnection($strMode)
     {
-        if (static::$objUserConnection && $blnUserMode)
+        if (isset(static::$arrConnections[$strMode]))
         {
-            return static::$objUserConnection;
+            return static::$arrConnections[$strMode];
         }
 
-        if (static::$objMemberConnection && !$blnUserMode)
-        {
-            return static::$objMemberConnection;
-        }
-
-        return static::connect($blnUserMode);
+        return static::connect($strMode);
     }
 
     public static function usernameIsEmail()
