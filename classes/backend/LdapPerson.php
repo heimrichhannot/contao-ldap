@@ -6,7 +6,6 @@ use HeimrichHannot\Ldap\Ldap;
 
 class LdapPerson
 {
-    protected static $blnUserMode        = false;
     protected static $strPrefix          = '';
     protected static $strLdapModel       = '';
     protected static $strLocalModel      = '';

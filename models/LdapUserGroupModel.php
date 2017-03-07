@@ -4,7 +4,6 @@ namespace HeimrichHannot\Ldap;
 
 class LdapUserGroupModel extends LdapPersonGroupModel
 {
-    protected static $blnUserMode        = true;
     protected static $strPrefix          = 'User';
     protected static $strLocalModel      = '\UserModel';
     protected static $strLocalGroupModel = '\UserGroupModel';

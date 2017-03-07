@@ -63,7 +63,7 @@ $arrFields = [
         'options'   => ['ssl'],
         'eval'      => ['tl_class' => 'w50', 'includeBlankOption' => true],
     ],
-    'personBase'                => [
+    'personBase'          => [
         'label'     => &$GLOBALS['TL_LANG']['tl_settings']['personBase'],
         'exclude'   => true,
         'inputType' => 'text',
@@ -111,19 +111,19 @@ $arrFields = [
         ],
         'sql'       => "blob NULL",
     ],
-    'defaultPersonValues'  => [
+    'defaultPersonValues' => [
         'label'     => &$GLOBALS['TL_LANG']['tl_settings']['defaultPersonValues'],
         'inputType' => 'multiColumnEditor',
         'eval'      => [
             'multiColumnEditor' => [
                 'minRowCount' => 0,
                 'fields'      => [
-                    'field' => [
+                    'field'        => [
                         'label'     => &$GLOBALS['TL_LANG']['tl_settings']['field'],
                         'inputType' => 'text',
                         'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
                     ],
-                    'defaultValue'   => [
+                    'defaultValue' => [
                         'label'     => &$GLOBALS['TL_LANG']['tl_settings']['defaultValue'],
                         'inputType' => 'text',
                         'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
@@ -133,7 +133,7 @@ $arrFields = [
         ],
         'sql'       => "blob NULL",
     ],
-    'groupBase'                => [
+    'groupBase'           => [
         'label'     => &$GLOBALS['TL_LANG']['tl_settings']['groupBase'],
         'exclude'   => true,
         'inputType' => 'text',
@@ -146,7 +146,7 @@ $arrFields = [
         'default'   => '(&(objectClass=group))',
         'eval'      => ['mandatory' => true, 'decodeEntities' => true, 'tl_class' => 'w50'],
     ],
-    'groupFieldMapping'  => [
+    'groupFieldMapping'   => [
         'label'     => &$GLOBALS['TL_LANG']['tl_settings']['groupFieldMapping'],
         'inputType' => 'multiColumnEditor',
         'eval'      => [
@@ -174,10 +174,7 @@ $arrFields = [
         'filter'           => true,
         'inputType'        => 'checkboxWizard',
         'eval'             => ['multiple' => true, 'tl_class' => 'long clr'],
-        'options_callback' => ['HeimrichHannot\Ldap\Backend\LdapMemberGroup', 'getLdapMemberGroupsAsOptions'],
-        'save_callback'    => [
-            ['HeimrichHannot\Ldap\Backend\LdapMemberGroup', 'updateMemberGroups'],
-        ]
+        // save_callback and options_callback is set dynamically below
     ]
 ];
 
@@ -202,6 +199,11 @@ $arrDca['fields'] = array_merge(
 // dynamically add fields for members and users
 foreach ($arrFields as $strField => $arrData)
 {
+    if ($strField == 'groupFieldMapping')
+    {
+        continue;
+    }
+
     $arrDca['fields']['ldapMember' . ucfirst($strField)] = $arrData;
     $arrDca['subpalettes']['addLdapForMembers'] .= 'ldapMember' . ucfirst($strField) . ',';
 
@@ -210,11 +212,11 @@ foreach ($arrFields as $strField => $arrData)
 }
 
 $arrDca['fields']['ldapMemberGroups']['options_callback'] = ['HeimrichHannot\Ldap\Backend\LdapMemberGroup', 'getLdapPersonGroupsAsOptions'];
-$arrDca['fields']['ldapMemberGroups']['save_callback'] = [
-    ['HeimrichHannot\Ldap\Backend\LdapMemberGroup', 'updatePersonGroups'],
+$arrDca['fields']['ldapMemberGroups']['save_callback']    = [
+    ['HeimrichHannot\Ldap\Backend\LdapMemberGroup', 'updatePersonGroups']
 ];
 
 $arrDca['fields']['ldapUserGroups']['options_callback'] = ['HeimrichHannot\Ldap\Backend\LdapUserGroup', 'getLdapPersonGroupsAsOptions'];
-$arrDca['fields']['ldapUserGroups']['save_callback'] = [
-    ['HeimrichHannot\Ldap\Backend\LdapUserGroup', 'updatePersonGroups'],
+$arrDca['fields']['ldapUserGroups']['save_callback']    = [
+    ['HeimrichHannot\Ldap\Backend\LdapUserGroup', 'updatePersonGroups']
 ];

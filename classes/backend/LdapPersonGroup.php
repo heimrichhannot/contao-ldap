@@ -4,7 +4,6 @@ namespace HeimrichHannot\Ldap\Backend;
 
 class LdapPersonGroup
 {
-    protected static $blnUserMode        = false;
     protected static $strPrefix          = '';
     protected static $strLdapModel       = '';
     protected static $strLocalModel      = '';
@@ -82,7 +81,7 @@ class LdapPersonGroup
                 }
             }
 
-            $strClass = static::$blnUserMode ? 'HeimrichHannot\Ldap\Backend\LdapUser' : 'HeimrichHannot\Ldap\Backend\LdapMember';
+            $strClass = 'HeimrichHannot\Ldap\Backend\Ldap' . static::$strPrefix;
 
             $strClass::updatePersons($arrSelectedGroups);
         }

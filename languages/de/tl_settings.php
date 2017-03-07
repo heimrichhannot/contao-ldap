@@ -9,7 +9,7 @@ $arrLang['addLdapForMembers']   = ['LDAP für Mitglieder aktivieren', 'Aktiviere
 $arrLang['addLdapForUsers']     = ['LDAP für Benutzer aktivieren', 'Aktivieren Sie hier den Login via Ldap für Benutzer.'];
 $arrLang['host']                = ['Host', 'IP oder Domain des LDAP-Servers'];
 $arrLang['port']                = ['Port', 'Standard-Port: 389, SSL-Standard-Port: 636'];
-$arrLang['personBase']          = ['Base (Personen)', 'Adressierung für User (Beispiel: CN=users,DC=local,DC=anwaltverein,DC=de).'];
+$arrLang['personBase']          = ['Base (Personen)', 'Adressierung für User (Beispiel: CN=users,DC=local,DC=company,DC=de).'];
 $arrLang['personFilter'][0]     = 'Suchfilter für Personen';
 $arrLang['personFilter'][1]     =
     'Hinweis: Bitte filtern Sie so, dass das Benutzername-Feld nur einmal vorkommt bzw. das erste Vorkommen das relevante ist (Beispiel: "(&(objectClass=person)(objectClass=posixAccount)(mail=*@domain.com))")';
@@ -21,11 +21,11 @@ $arrLang['ldapField']           = ['LDAP-Feld(er)', 'Einzelfeldname oder Muster 
 $arrLang['contaoField']         = ['Contao-Feld', ''];
 $arrLang['defaultPersonValues'] = [
     'Standardwerte',
-    'Legen Sie hier Standardwerte fest, die neuen personen zugewiesen werden sollen.'
+    'Legen Sie hier Standardwerte fest, die neuen Personen zugewiesen werden sollen.'
 ];
 $arrLang['field']               = ['Feld', ''];
 $arrLang['defaultValue']        = ['Wert', ''];
-$arrLang['groupBase']           = ['Base (Gruppen)', 'Adressierung für Groups (Beispiel: CN=groups,DC=local,DC=anwaltverein,DC=de).'];
+$arrLang['groupBase']           = ['Base (Gruppen)', 'Adressierung für Groups (Beispiel: CN=groups,DC=local,DC=company,DC=de).'];
 $arrLang['groupFilter']         = ['Suchfilter für Gruppen', 'Beispiel: "(&(objectClass=group))".'];
 $arrLang['groupFieldMapping']   = [
     'Abbildung von LDAP- auf Contao-Gruppenfelder',

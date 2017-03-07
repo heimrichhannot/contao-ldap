@@ -18,7 +18,8 @@
     },
     "require": {
         "contao/core": ">=3.2,<4-dev",
-        "heimrichhannot/contao-request": "^1.0"
+        "heimrichhannot/contao-request": "^1.0",
+        "heimrichhannot/contao-multi_column_editor": "^1.0"
     },
     "autoload": {
         "classmap": [""]

@@ -5,7 +5,6 @@ namespace HeimrichHannot\Ldap;
 abstract class LdapPersonModel extends \Model
 {
     protected static $arrRequiredAttributes = ['uid'];
-    protected static $blnUserMode           = false;
     protected static $strPrefix             = '';
     protected static $strLdapModel          = '';
     protected static $strLocalModel         = '';
@@ -14,7 +13,7 @@ abstract class LdapPersonModel extends \Model
 
     public static function findAll()
     {
-        if ($objConnection = Ldap::getConnection(static::$blnUserMode))
+        if ($objConnection = Ldap::getConnection(strtolower(static::$strPrefix)))
         {
             $arrAttributes = static::$arrRequiredAttributes;
             $arrAttributes = static::addAttributes($arrAttributes);
@@ -48,7 +47,7 @@ abstract class LdapPersonModel extends \Model
 
     public static function findByUsername($strUsername)
     {
-        if ($objConnection = Ldap::getConnection(static::$blnUserMode))
+        if ($objConnection = Ldap::getConnection(strtolower(static::$strPrefix)))
         {
             $strFilter = '(&(' . \Config::get('ldap' . static::$strPrefix . 'LdapUsernameField') . '=' . $strUsername . ')' . \Config::get(
                     'ldap' . static::$strPrefix . 'PersonFilter'
