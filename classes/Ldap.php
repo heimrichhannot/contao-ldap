@@ -2,6 +2,8 @@
 
 namespace HeimrichHannot\Ldap;
 
+use HeimrichHannot\Request\Request;
+
 class Ldap extends \System
 {
     const LDAP_INVALID_CREDENTIALS = 49;
@@ -47,7 +49,10 @@ class Ldap extends \System
         }
         else
         {
-            throw new \Exception('Please fully configure your LDAP connection at first.');
+            if (Request::getGet('do') !== 'settings')
+            {
+                throw new \Exception('Please fully configure your LDAP connection at first.');
+            }
         }
     }
 

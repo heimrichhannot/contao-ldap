@@ -11,7 +11,7 @@ abstract class LdapPersonModel extends \Model
     protected static $strLdapGroupModel     = '';
     protected static $strLocalGroupModel    = '';
 
-    public static function findAll()
+    public static function findAll(array $arrOptions = [])
     {
         if ($objConnection = Ldap::getConnection(strtolower(static::$strPrefix)))
         {

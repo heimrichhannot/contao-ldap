@@ -2,14 +2,6 @@
 
 Adds LDAP support for frontend and backend.
 
-## CAUTION: The module is experimental and wired to a certain ldap implementation at the moment. Nevertheless it is planned to have more flexibility:
-
-Unfortunately a developer is very free how to configure an ldap system.
-For example, the member <-> group relation can be defined member-centered, in the way that group references are stored in each
-member record. Also it would be possible to do that group-centered, meaning that member references are stored in each group record.
-A possible solution for this problem would be to leave it to the developer using this module to write some little hook function that
-returns an array of members and groups. Each member also contains a property "groups" containing the group ids assigned to the member.
-
 ![alt Archive](docs/screenshot.png)
 
 *Configuration*
