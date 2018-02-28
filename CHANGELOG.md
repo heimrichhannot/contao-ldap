@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.0.4] - 2018-02-28
+
+### Added
+- English translation
+
 ## [2.0.3] - 2017-12-19
 
 ### Fixes
