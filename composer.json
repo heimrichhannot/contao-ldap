@@ -1,6 +1,6 @@
 {
-    "name": "heimrichhannot/contao-ldap",
-    "description":"A simple module extending the standard login module with ldap functionality.",
+    "name": "refulgent/contao-ldap",
+    "description":"Modification of Heimrich & Hannot's contao-ldap to work with Contao 4.4",
     "keywords":["contao", "ldap", "auth", "module", "developer"],
     "type": "contao-module",
     "homepage":"https://github.com/heimrichhannot/contao-ldap",
@@ -11,10 +11,15 @@
             "email":"digitales@heimrich-hannot.de",
             "homepage":"http://www.heimrich-hannot.de",
             "role":"Developer"
+        },
+        {
+            "name":"Javanaut",
+            "email":"javanaut@refulgent.de"
+            "role":"Developer"
         }
     ],
     "support":{
-        "issues":"https://github.com/heimrichhannot/contao-ldap/issues"
+        "issues":"https://github.com/javanaut2018/contao-ldap/issues"
     },
     "require": {
         "contao/core": "^3.2",
