@@ -1,3 +1,5 @@
+> This module is abandoned. Please use [https://github.com/heimrichhannot/contao-ldap-bundle](https://github.com/heimrichhannot/contao-ldap-bundle) instead.
+
 # LDAP
 
 Adds LDAP support for frontend and backend.
